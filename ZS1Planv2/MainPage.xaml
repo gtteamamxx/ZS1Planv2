@@ -3,11 +3,71 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:ZS1Planv2"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:behaviors="using:Microsoft.Toolkit.Uwp.UI.Animations.Behaviors"
+    xmlns:vm="using:ZS1Planv2.ViewModel"
+    xmlns:converters="using:ZS1Planv2.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sys="using:System"
+    Loaded="Page_Loaded"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.DataContext>
+        <vm:MainPageViewModel />
+    </Page.DataContext>
 
+    <Page.Resources>
+        <Style TargetType="Grid" x:Key="InfoGridStyle">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="BorderBrush" Value="Black" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="2" />
+            <Setter Property="Width" Value="300" />
+            <Setter Property="Background" Value="{ThemeResource ApplicationPageBackgroundThemeBrush}" />
+        </Style>
+    </Page.Resources>
+    
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Margin="50">
+            <interactivity:Interaction.Behaviors>
+                <behaviors:Blur Value="{Binding Blur, Converter={StaticResource BoolToBlurValueConverter}}" Duration="0" Delay="0" AutomaticallyStart="True" />
+            </interactivity:Interaction.Behaviors>
+            
+            <Image Stretch="Uniform" Source="ms-appx:///Images/zs1logo.png" />
+            <ProgressBar Value="{Binding LoadingValue}" Margin="25 25 25 0"/>
+            <TextBlock Text="{Binding LoadingText}" Margin="0 15 0 0" HorizontalAlignment="Center"/>
+            <ProgressRing IsActive="{Binding LoadingProgressRingActive}" Width="50" Height="50" 
+                          HorizontalAlignment="Center" />
+        </StackPanel>
+ 
+        <Grid Visibility="{Binding DownloadTimetable, Converter={StaticResource BoolToVisibilityConverter}}"
+              Style="{StaticResource InfoGridStyle}">
+            
+            <StackPanel Margin="10">
+                <TextBlock Text="{Binding DownloadingTimetableText}" TextWrapping="Wrap"
+                           HorizontalAlignment="Center"/>
+
+                <Button Content="Pobierz plan lekcji" HorizontalAlignment="Center" Margin="0 10 0 0"
+                        Visibility="{Binding TimetableDownloading, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='reverse'}"
+                        Click="Button_Click" />
+                
+                <ProgressBar Visibility="{Binding TimetableDownloading, Converter={StaticResource BoolToVisibilityConverter}}" 
+                             Value="{Binding DownloadingValue}" Margin="5 10 5 0" />
+            </StackPanel>
+            
+        </Grid>
+
+        <Grid Style="{StaticResource InfoGridStyle}"
+              Visibility="{Binding NoInternet, Converter={StaticResource BoolToVisibilityConverter}}">
+            <StackPanel Margin="10">
+                <TextBlock Text="{Binding NoInternetInfoText}" TextWrapping="Wrap"
+                           HorizontalAlignment="Center"/>
+                <Button Content="{Binding NoInternetButtonText}" HorizontalAlignment="Center" Margin="0 10 0 0"
+                        Click="Button_Click_1"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Page>
