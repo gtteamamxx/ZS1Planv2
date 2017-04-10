@@ -6,13 +6,15 @@
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:behaviors="using:Microsoft.Toolkit.Uwp.UI.Animations.Behaviors"
     xmlns:vm="using:ZS1Planv2.ViewModel"
-    xmlns:converters="using:ZS1Planv2.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:sys="using:System"
-    Loaded="Page_Loaded"
+    xmlns:bp="using:WinRtMvvmBindingPack"
     mc:Ignorable="d">
 
+    <bp:BindXAML.AddEvents>
+        <bp:BindEventHandler MethodName="PageLoaded" TargetEventName="Loaded" />
+    </bp:BindXAML.AddEvents>
+    
     <Page.DataContext>
         <vm:MainPageViewModel />
     </Page.DataContext>
@@ -50,9 +52,12 @@
                 <TextBlock Text="{Binding DownloadingTimetableText}" TextWrapping="Wrap"
                            HorizontalAlignment="Center"/>
 
-                <Button Content="Pobierz plan lekcji" HorizontalAlignment="Center" Margin="0 10 0 0"
-                        Visibility="{Binding TimetableDownloading, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='reverse'}"
-                        Click="Button_Click" />
+                <Button Content="{Binding DownloadTimetableButtonText}" HorizontalAlignment="Center" Margin="0 10 0 0"
+                        Visibility="{Binding TimetableDownloading, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='reverse'}">
+                    <bp:BindXAML.AddEvents>
+                        <bp:BindEventHandler MethodName="DownloadTimetableButton_Click" TargetEventName="Click" />
+                    </bp:BindXAML.AddEvents>
+                </Button>
                 
                 <ProgressBar Visibility="{Binding TimetableDownloading, Converter={StaticResource BoolToVisibilityConverter}}" 
                              Value="{Binding DownloadingValue}" Margin="5 10 5 0" />
@@ -65,8 +70,11 @@
             <StackPanel Margin="10">
                 <TextBlock Text="{Binding NoInternetInfoText}" TextWrapping="Wrap"
                            HorizontalAlignment="Center"/>
-                <Button Content="{Binding NoInternetButtonText}" HorizontalAlignment="Center" Margin="0 10 0 0"
-                        Click="Button_Click_1"/>
+                <Button Content="{Binding NoInternetButtonText}" HorizontalAlignment="Center" Margin="0 10 0 0">
+                    <bp:BindXAML.AddEvents>
+                        <bp:BindEventHandler MethodName="NoInternetButton_Click" TargetEventName="Click" />
+                    </bp:BindXAML.AddEvents>
+                </Button>
             </StackPanel>
         </Grid>
     </Grid>

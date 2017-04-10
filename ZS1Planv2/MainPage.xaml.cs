@@ -30,16 +30,7 @@ namespace ZS1Planv2
             this.InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-            => _ViewModel.DownloadTimetableButton_Click(sender as Button, e);
-
-        private void Page_Loaded(object sender, RoutedEventArgs e)
-            => _ViewModel.PageLoaded(this);
-
         protected override void OnNavigatedTo(NavigationEventArgs e)
             => _ViewModel.OnNavigatedTo(e);
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-            => _ViewModel.RetryDownloadTimetableButton(sender as Button, e);
     }
 }

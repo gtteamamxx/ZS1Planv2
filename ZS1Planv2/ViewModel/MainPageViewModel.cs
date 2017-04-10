@@ -199,7 +199,7 @@ namespace ZS1Planv2.ViewModel
             DownloadTimetable = true;
         }
 
-        public void DownloadTimetableButton_Click(Button sender,RoutedEventArgs e)
+        public void DownloadTimetableButton_Click(object sender, RoutedEventArgs e)
         {
             if(!InternetConnection.ConnectionAvailable())
             {
@@ -214,14 +214,14 @@ namespace ZS1Planv2.ViewModel
             //todo
         }
         
-        public void RetryDownloadTimetableButton(Button sender, RoutedEventArgs e)
+        public void NoInternetButton_Click(object sender, RoutedEventArgs e)
         {
             NoInternet = false;
             TimetableDownloading = false;
             DownloadTimetable = true;
         }
 
-        public void PageLoaded(MainPage page)
+        public void PageLoaded(object sender, RoutedEventArgs e)
         {
             if (DownloadTimetable)
                 return;
