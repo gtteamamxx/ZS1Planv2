@@ -8,14 +8,16 @@
     xmlns:vm="using:ZS1Planv2.ViewModel"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:bp="using:WinRtMvvmBindingPack"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    x:Name="Page"
     mc:Ignorable="d">
 
-    <bp:BindXAML.AddEvents>
-        <bp:BindEventHandler MethodName="PageLoadedAsync" TargetEventName="Loaded" />
-        <bp:BindEventHandler MethodName="PageUnloaded" TargetEventName="Unloaded" />
-    </bp:BindXAML.AddEvents>
-
+    <interactivity:Interaction.Behaviors>
+        <core:EventTriggerBehavior EventName="Loaded">
+            <core:InvokeCommandAction Command="{Binding PageLoadedCommand}" />
+        </core:EventTriggerBehavior>
+    </interactivity:Interaction.Behaviors>
+    
     <Page.DataContext>
         <vm:MainPageViewModel />
     </Page.DataContext>
@@ -53,11 +55,15 @@
                 <TextBlock Text="{Binding DownloadingTimetableText}" TextWrapping="Wrap"
                            HorizontalAlignment="Center"/>
 
-                <Button Content="{Binding DownloadTimetableButtonText}" HorizontalAlignment="Center" Margin="0 10 0 0"
+                <Button HorizontalAlignment="Center" Margin="0 10 0 0"
                         Visibility="{Binding TimetableDownloading, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='reverse'}">
-                    <bp:BindXAML.AddEvents>
-                        <bp:BindEventHandler MethodName="DownloadTimetableButton_ClickAsync" TargetEventName="Click" />
-                    </bp:BindXAML.AddEvents>
+                    <TextBlock Text="{Binding DownloadTimetableButtonText}">
+                         <interactivity:Interaction.Behaviors>
+                            <core:EventTriggerBehavior EventName="Tapped">
+                                <core:InvokeCommandAction Command="{Binding DownloadTimetableButton_ClickCommand}" />
+                            </core:EventTriggerBehavior>
+                        </interactivity:Interaction.Behaviors>
+                    </TextBlock>
                 </Button>
 
                 <ProgressBar Visibility="{Binding TimetableDownloading, Converter={StaticResource BoolToVisibilityConverter}}" 
@@ -71,10 +77,14 @@
             <StackPanel Margin="10">
                 <TextBlock Text="{Binding NoInternetInfoText}" TextWrapping="Wrap"
                            HorizontalAlignment="Center"/>
-                <Button Content="{Binding NoInternetButtonText}" HorizontalAlignment="Center" Margin="0 10 0 0">
-                    <bp:BindXAML.AddEvents>
-                        <bp:BindEventHandler MethodName="NoInternetButton_Click" TargetEventName="Click" />
-                    </bp:BindXAML.AddEvents>
+                <Button HorizontalAlignment="Center" Margin="0 10 0 0">
+                    <TextBlock Text="{Binding NoInternetButtonText}">
+                         <interactivity:Interaction.Behaviors>
+                            <core:EventTriggerBehavior EventName="Tapped">
+                                <core:InvokeCommandAction Command="{Binding NoInternetButton_ClickCommand}" />
+                            </core:EventTriggerBehavior>
+                        </interactivity:Interaction.Behaviors>
+                    </TextBlock>
                 </Button>
             </StackPanel>
         </Grid>
@@ -84,10 +94,14 @@
             <StackPanel Margin="10">
                 <TextBlock Text="{Binding DownloadErrorInfoText}" TextWrapping="Wrap"
                            HorizontalAlignment="Center"/>
-                <Button Content="{Binding DownloadErrorButtonText}" HorizontalAlignment="Center" Margin="0 10 0 0">
-                    <bp:BindXAML.AddEvents>
-                        <bp:BindEventHandler MethodName="DownloadErrorButton_Click" TargetEventName="Click" />
-                    </bp:BindXAML.AddEvents>
+                <Button HorizontalAlignment="Center" Margin="0 10 0 0">
+                    <TextBlock Text="{Binding DownloadErrorButtonText}">
+                         <interactivity:Interaction.Behaviors>
+                            <core:EventTriggerBehavior EventName="Tapped">
+                                <core:InvokeCommandAction Command="{Binding DownloadErrorButton_ClickCommand}" />
+                            </core:EventTriggerBehavior>
+                        </interactivity:Interaction.Behaviors>
+                    </TextBlock>
                 </Button>
             </StackPanel>
         </Grid>

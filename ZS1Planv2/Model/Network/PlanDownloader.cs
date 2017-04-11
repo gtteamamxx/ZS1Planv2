@@ -10,6 +10,11 @@ namespace ZS1Planv2.Model.Network
 {
     public class PlanDownloader
     {
+        ~PlanDownloader()
+        {
+            this._Parser = null;
+        }
+
         public delegate void DownloadProgressChanged(string name, double percentage);
         public event DownloadProgressChanged OnDownloadProgressChanged;
 
@@ -28,8 +33,7 @@ namespace ZS1Planv2.Model.Network
         public async Task<Plan.Plan> DownloadNewPlanAsync()
         {
             CreateParser();
-            Model.Plan.Plan plan = await DownloadPlanAsync();
-            return plan;
+            return await DownloadPlanAsync();
         }
 
         private async Task<Plan.Plan> DownloadPlanAsync()
@@ -46,7 +50,7 @@ namespace ZS1Planv2.Model.Network
                     ClassesPlans = await DownloadClassesPlanAsync(plans.ElementAt((int)Plans.Classes_Plans)),
                 };
             }
-            catch (Exception ex)
+            catch
             {
                 return null;
             }

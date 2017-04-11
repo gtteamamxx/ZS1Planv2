@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.Command;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -18,6 +19,24 @@ namespace ZS1Planv2.ViewModel
     public class MainPageViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+
+        #region Commands
+        private RelayCommand _PageLoadedCommand;
+        public RelayCommand PageLoadedCommand => 
+            _PageLoadedCommand ?? (_PageLoadedCommand = new RelayCommand(() => PageLoadedAsync()));
+
+        private RelayCommand _DownloadTimetableButton_ClickCommand;
+        public RelayCommand DownloadTimetableButton_ClickCommand =>
+            _DownloadTimetableButton_ClickCommand ?? (_DownloadTimetableButton_ClickCommand = new RelayCommand(() => DownloadTimetableButton_ClickAsync()));
+
+        private RelayCommand _NoInternetButton_ClickCommand;
+        public RelayCommand NoInternetButton_ClickCommand =>
+            _NoInternetButton_ClickCommand ?? (_NoInternetButton_ClickCommand = new RelayCommand(() => NoInternetButton_Click()));
+
+        private RelayCommand _DownloadErrorButton_ClickCommand;
+        public RelayCommand DownloadErrorButton_ClickCommand =>
+            _DownloadErrorButton_ClickCommand ?? (_DownloadErrorButton_ClickCommand = new RelayCommand(() => DownloadErrorButton_Click()));
+#endregion
 
         #region Properties
         private bool _DownloadTimetable;
@@ -240,6 +259,7 @@ namespace ZS1Planv2.ViewModel
                 OnPropertyChanged("Blur");
             }
         }
+
         #endregion
 
         private async Task LoadTimetableAsync()
@@ -260,7 +280,7 @@ namespace ZS1Planv2.ViewModel
             DownloadTimetable = true;
         }
 
-        public async void DownloadTimetableButton_ClickAsync(object sender, RoutedEventArgs e)
+        public async void DownloadTimetableButton_ClickAsync()
         {
             if (!InternetConnection.ConnectionAvailable())
             {
@@ -313,13 +333,13 @@ namespace ZS1Planv2.ViewModel
             DownloadingTimetableText = $"Trwa pobieranie... {name}";
         }
 
-        public void DownloadErrorButton_Click(object sender, RoutedEventArgs e)
+        public void DownloadErrorButton_Click()
         {
             DownloadError = false;
             DownloadTimetable = true;
         }
 
-        public void NoInternetButton_Click(object sender, RoutedEventArgs e)
+        public void NoInternetButton_Click()
         {
             NoInternet = false;
             TimetableDownloading = false;
@@ -332,7 +352,7 @@ namespace ZS1Planv2.ViewModel
         private void UnregisterDownloadProgressEvent(PlanDownloader planDownloader)
             => planDownloader.OnDownloadProgressChanged -= PlanDownloader_OnDownloadProgressChanged;
 
-        public async void PageLoadedAsync(object sender, RoutedEventArgs e)
+        public async void PageLoadedAsync()
         {
             if (DownloadTimetable)
                 return;

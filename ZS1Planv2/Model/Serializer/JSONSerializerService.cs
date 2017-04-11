@@ -29,7 +29,7 @@ namespace ZS1Planv2.Model.Serializer
                 await Task.Run(() =>
                 {
                     byte[] bytes = Encoding.UTF8.GetBytes(getSerializedString(item));
-                    File.Create(_FILE_PATH).Write(bytes, 0, bytes.Count())
+                    File.Create(_FILE_PATH).Write(bytes, 0, bytes.Count());
                 });
                 return true;
             }
