@@ -12,7 +12,6 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Navigation;
 using ZS1Planv2.Model.Application;
 using ZS1Planv2.Model.Network;
-using ZS1Planv2.Model.SQL;
 
 namespace ZS1Planv2.ViewModel
 {
@@ -183,6 +182,52 @@ namespace ZS1Planv2.ViewModel
             }
         }
 
+        private bool _DownloadError;
+        public bool DownloadError
+        {
+            get => _DownloadError;
+            set
+            {
+                if (_DownloadError == value)
+                    return;
+                _DownloadError = value;
+
+                if(value)
+                {
+                    DownloadErrorInfoText = Text.GetText(Text.TextId.Downloading_Error_Text_1);
+                    DownloadErrorButtonText = Text.GetText(Text.TextId.Downloading_Error_Text_2);
+                }
+
+                OnPropertyChanged("DownloadError");
+            }
+        }
+
+        private string _DownloadErrorInfoText;
+        public string DownloadErrorInfoText
+        {
+            get => _DownloadErrorInfoText;
+            set
+            {
+                if (_DownloadErrorInfoText == value)
+                    return;
+                _DownloadErrorInfoText = value;
+                OnPropertyChanged("DownloadErrorInfoText");
+            }
+        }
+
+        private string _DownloadErrorButtonText;
+        public string DownloadErrorButtonText
+        {
+            get => _DownloadErrorButtonText;
+            set
+            {
+                if (_DownloadErrorButtonText == value)
+                    return;
+                _DownloadErrorButtonText = value;
+                OnPropertyChanged("DownloadErrorButtonText");
+            }
+        }
+
         private bool _Blur;
         public bool Blur
         {
@@ -195,16 +240,19 @@ namespace ZS1Planv2.ViewModel
                 OnPropertyChanged("Blur");
             }
         }
-#endregion
+        #endregion
 
-        private void LoadTimetable()
+        private async Task LoadTimetableAsync()
         {
-
             LoadingText = Text.GetText(Text.TextId.Loading_Text_1);
-            new SQLService();
 
-            if(SQLService.Instance.LoadDatabase())
+            Model.Plan.Plan plan = await new Model.Serializer.JSONSerializerService()
+                .LoadData<Model.Plan.Plan>();
+            
+            if (plan != null)
             {
+                plan.SetAsMainInstance();
+                LoadingValue = 100;
                 //todo
                 return;
             }
@@ -233,18 +281,42 @@ namespace ZS1Planv2.ViewModel
 
             if(plan == null)
             {
-                //todo
+                TimetableDownloading = false;
+                DownloadTimetable = false;
+                DownloadError = true;
             }
             else
+                await SaveTimetableAsync(plan);
+        }
+
+        private async Task SaveTimetableAsync(Model.Plan.Plan plan)
+        {
+            DownloadingTimetableText = "Trwa zapisywanie...";
+            bool result = await new Model.Serializer.JSONSerializerService().SaveData<Model.Plan.Plan>(plan);
+
+            if (result == false)
             {
-                //todo
+                TimetableDownloading = false;
+                DownloadTimetable = false;
+                DownloadError = true;
+                return;
             }
+
+            plan.SetAsMainInstance();
+
+            //todo savedsuccesfully
         }
 
         private void PlanDownloader_OnDownloadProgressChanged(string name, double percentage)
         {
             DownloadingValue = percentage;
             DownloadingTimetableText = $"Trwa pobieranie... {name}";
+        }
+
+        public void DownloadErrorButton_Click(object sender, RoutedEventArgs e)
+        {
+            DownloadError = false;
+            DownloadTimetable = true;
         }
 
         public void NoInternetButton_Click(object sender, RoutedEventArgs e)
@@ -260,12 +332,12 @@ namespace ZS1Planv2.ViewModel
         private void UnregisterDownloadProgressEvent(PlanDownloader planDownloader)
             => planDownloader.OnDownloadProgressChanged -= PlanDownloader_OnDownloadProgressChanged;
 
-        public void PageLoaded(object sender, RoutedEventArgs e)
+        public async void PageLoadedAsync(object sender, RoutedEventArgs e)
         {
             if (DownloadTimetable)
                 return;
 
-            LoadTimetable();
+            await LoadTimetableAsync();
         }
 
         public void PageUnloaded(object sender, RoutedEventArgs e)
