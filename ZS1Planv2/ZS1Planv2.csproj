@@ -104,6 +104,9 @@
     <Compile Include="Model\Application\Text.cs" />
     <Compile Include="Model\Network\HtmlDownloader.cs" />
     <Compile Include="Model\Network\InternetConnection.cs" />
+    <Compile Include="Model\Network\PlanDownloader.cs" />
+    <Compile Include="Model\Plan\Day.cs" />
+    <Compile Include="Model\Plan\Lesson.cs" />
     <Compile Include="Model\Plan\LessonPlan.cs" />
     <Compile Include="Model\Plan\Plan.cs" />
     <Compile Include="Model\SQL\SQLService.cs" />

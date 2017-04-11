@@ -8,13 +8,18 @@ namespace ZS1Planv2.Model.Plan
 {
     public class Plan
     {
-        public static List<LessonPlan> ClassesPlans;
-        public static List<LessonPlan> TeachersPlans;
+        public static Plan Instance;
+
+        public List<LessonPlan> ClassesPlans;
+        public List<LessonPlan> TeachersPlans;
 
         public Plan()
         {
             ClassesPlans = new List<LessonPlan>();
             TeachersPlans = new List<LessonPlan>();
         }
+
+        public void SetAsMainInstance()
+            => Instance = this;
     }
 }

@@ -57,8 +57,8 @@ namespace ZS1Planv2.ViewModel
             }
         }
 
-        private int _LoadingValue;
-        public int LoadingValue
+        private double _LoadingValue;
+        public double LoadingValue
         {
             get => _LoadingValue;
             set
@@ -119,6 +119,19 @@ namespace ZS1Planv2.ViewModel
                     return;
                 _DownloadTimetableButtonText = value;
                 OnPropertyChanged("DownloadTimetableButtonText");
+            }
+        }
+
+        private double _DownloadingValue;
+        public double DownloadingValue
+        {
+            get => _DownloadingValue;
+            set
+            {
+                if (_DownloadingValue == value)
+                    return;
+                _DownloadingValue = value;
+                OnPropertyChanged("DownloadingValue");
             }
         }
 
@@ -199,9 +212,9 @@ namespace ZS1Planv2.ViewModel
             DownloadTimetable = true;
         }
 
-        public void DownloadTimetableButton_Click(object sender, RoutedEventArgs e)
+        public async void DownloadTimetableButton_ClickAsync(object sender, RoutedEventArgs e)
         {
-            if(!InternetConnection.ConnectionAvailable())
+            if (!InternetConnection.ConnectionAvailable())
             {
                 DownloadTimetable = false;
                 NoInternet = true;
@@ -211,15 +224,41 @@ namespace ZS1Planv2.ViewModel
             TimetableDownloading = true;
             DownloadingTimetableText = Text.GetText(Text.TextId.Downloading_Text_2);
 
-            //todo
+            PlanDownloader planDownloader = new PlanDownloader();
+            RegisterDownloadProgressEvent(planDownloader);
+
+            Model.Plan.Plan plan = await planDownloader.DownloadNewPlanAsync();
+
+            UnregisterDownloadProgressEvent(planDownloader);
+
+            if(plan == null)
+            {
+                //todo
+            }
+            else
+            {
+                //todo
+            }
         }
-        
+
+        private void PlanDownloader_OnDownloadProgressChanged(string name, double percentage)
+        {
+            DownloadingValue = percentage;
+            DownloadingTimetableText = $"Trwa pobieranie... {name}";
+        }
+
         public void NoInternetButton_Click(object sender, RoutedEventArgs e)
         {
             NoInternet = false;
             TimetableDownloading = false;
             DownloadTimetable = true;
         }
+
+        private void RegisterDownloadProgressEvent(PlanDownloader planDownloader)
+            => planDownloader.OnDownloadProgressChanged += PlanDownloader_OnDownloadProgressChanged;
+
+        private void UnregisterDownloadProgressEvent(PlanDownloader planDownloader)
+            => planDownloader.OnDownloadProgressChanged -= PlanDownloader_OnDownloadProgressChanged;
 
         public void PageLoaded(object sender, RoutedEventArgs e)
         {
@@ -228,6 +267,9 @@ namespace ZS1Planv2.ViewModel
 
             LoadTimetable();
         }
+
+        public void PageUnloaded(object sender, RoutedEventArgs e)
+            => ((MainPage)sender).DataContext = null;
 
         public void OnNavigatedTo(NavigationEventArgs e)
         {
