@@ -9,5 +9,6 @@
     <Application.Resources>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <converters:BoolToBlurValueConverter x:Key="BoolToBlurValueConverter" />
+        <converters:LessonNameToViewNameConverter x:Key="LessonNameToViewNameConverter" />
     </Application.Resources>
 </Application>

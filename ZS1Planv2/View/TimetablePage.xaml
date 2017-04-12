@@ -6,13 +6,175 @@
     xmlns:vm="using:ZS1Planv2.ViewModel"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="using:ZS1Planv2.Model.Plan"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:c="using:Microsoft.Xaml.Interactions.Core"
+    x:Name="Page"
     mc:Ignorable="d">
+
+    <i:Interaction.Behaviors>
+        <c:EventTriggerBehavior EventName="Loaded">
+            <c:InvokeCommandAction Command="{Binding PageLoadedCommand}"/>
+        </c:EventTriggerBehavior>
+        <c:EventTriggerBehavior EventName="SizeChanged">
+            <c:InvokeCommandAction Command="{Binding PageSizeChangedCommand}" />
+        </c:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
 
     <Page.DataContext>
         <vm:TimetablePageViewModel />
     </Page.DataContext>
+
+    <Page.Resources>
+        <Style x:Key="TextBlockSegoeStyle" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+            <Setter Property="FontSize" Value="28" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="TextBlockTitleStyle" TargetType="TextBlock">
+            <Setter Property="Margin" Value="10 0 0 0" />
+            <Setter Property="FontWeight" Value="Bold" />
+        </Style>
+
+        <Style x:Key="EmptyButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{ThemeResource ButtonForeground}"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="8,4,8,4"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}"/>
+            <Setter Property="UseSystemFocusVisuals" Value="False"/>
+            <Setter Property="FocusVisualMargin" Value="-3"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid x:Name="RootGrid" Background="{TemplateBinding Background}">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Disabled">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="RootGrid">
+                                                <DiscreteObjectKeyFrame KeyTime="0">
+                                                    <DiscreteObjectKeyFrame.Value>
+                                                        <SolidColorBrush Color="Transparent" />
+                                                    </DiscreteObjectKeyFrame.Value>
+                                                </DiscreteObjectKeyFrame>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="ContentPresenter">
+                                                <DiscreteObjectKeyFrame KeyTime="0">
+                                                    <DiscreteObjectKeyFrame.Value>
+                                                        <SolidColorBrush Color="Transparent" />
+                                                    </DiscreteObjectKeyFrame.Value>
+                                                </DiscreteObjectKeyFrame>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ApplicationForegroundThemeBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <ContentPresenter x:Name="ContentPresenter" 
+                                              AutomationProperties.AccessibilityView="Raw" 
+                                              BorderBrush="{TemplateBinding BorderBrush}" 
+                                              BorderThickness="{TemplateBinding BorderThickness}" 
+                                              ContentTemplate="{TemplateBinding ContentTemplate}" 
+                                              ContentTransitions="{TemplateBinding ContentTransitions}"
+                                              Content="{TemplateBinding Content}" 
+                                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                              Padding="{TemplateBinding Padding}" 
+                                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
     
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <StackPanel>
+            <RelativePanel Height="50">
+                <Grid RelativePanel.AlignHorizontalCenterWithPanel="True"
+                      RelativePanel.AlignLeftWithPanel="True"
+                      Name="MainMenuButtonGrid">
+                    <TextBlock Style="{StaticResource TextBlockSegoeStyle}"
+                               Text="{Binding MainMenuButtonText}" />
+                    <Button Width="50"
+                            Height="50">
+                        <i:Interaction.Behaviors>
+                            <c:EventTriggerBehavior EventName="Click">
+                                <c:InvokeCommandAction Command="{Binding MainMenuButtonCommand}" />
+                            </c:EventTriggerBehavior>
+                        </i:Interaction.Behaviors>
+                    </Button>
+                </Grid>
 
+                <Grid RelativePanel.RightOf="MainMenuButtonGrid"
+                      RelativePanel.AlignVerticalCenterWithPanel="True">
+                    <TextBlock Style="{StaticResource TextBlockTitleStyle}"
+                               Text="{Binding TitleText, Converter={StaticResource LessonNameToViewNameConverter}}" />
+                </Grid>
+            </RelativePanel>
+
+            <SplitView DisplayMode="CompactOverlay"
+                       CompactPaneLength="0"
+                       OpenPaneLength="50"
+                       Height="{Binding MenuListViewHeight}"
+                       IsPaneOpen="{Binding SplitViewIsPaneOpen, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+               
+                <SplitView.Content>
+                    <ScrollViewer ZoomMode="Enabled" MinZoomFactor="0.5" MaxZoomFactor="4">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <Grid HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  Grid.Row="1">
+                                <Button Content="{Binding ScrollViewerContent}"
+                                        Style="{StaticResource EmptyButtonStyle}"
+                                        IsEnabled="False"/>
+                            </Grid>
+                        </Grid>
+                    </ScrollViewer>
+                </SplitView.Content>
+
+                <SplitView.Pane>
+                    <ScrollViewer VerticalScrollBarVisibility="Hidden"
+                                  VerticalScrollMode="Enabled">
+                        
+                        <ListView ItemsSource="{Binding LessonsPlans}"
+                                  SelectedItem="{Binding SelectedPlan,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                  HorizontalContentAlignment="Center"
+                                  ShowsScrollingPlaceholders="False"
+                                  Height="{Binding MenuListViewHeight}"
+                                  ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                            
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="model:LessonPlan">
+                                    <Grid Height="30">
+                                        <TextBlock Text="{Binding Name}"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center"
+                                                   TextAlignment="Center"
+                                                   Margin="-2 0 0 0"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                            
+                        </ListView>
+                    </ScrollViewer>
+                    
+                </SplitView.Pane>
+            </SplitView>
+        </StackPanel>
     </Grid>
 </Page>

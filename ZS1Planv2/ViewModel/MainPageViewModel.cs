@@ -51,14 +51,14 @@ namespace ZS1Planv2.ViewModel
 
                 if (value)
                 {
-                    DownloadingTimetableText = Text.GetText(Text.TextId.Downloading_Text_1);
-                    DownloadTimetableButtonText = Text.GetText(Text.TextId.Downloading_Text_3);
+                    DownloadingTimetableText = Text.GetText(Text.TextId.MainPage_Downloading_Text_1);
+                    DownloadTimetableButtonText = Text.GetText(Text.TextId.MainPage_Downloading_Text_3);
                     Blur = true;
                 }
                 else
                     Blur = false;
 
-                OnPropertyChanged("DownloadTimetable");
+                OnPropertyChanged();
             }
         }
 
@@ -71,7 +71,7 @@ namespace ZS1Planv2.ViewModel
                 if (value == _TimetableDownloading)
                     return;
                 _TimetableDownloading = value;
-                OnPropertyChanged("TimetableDownloading");
+                OnPropertyChanged();
             }
         }
 
@@ -84,7 +84,7 @@ namespace ZS1Planv2.ViewModel
                 if (value == _LoadingValue)
                     return;
                 _LoadingValue = value;
-                OnPropertyChanged("LoadingValue");
+                OnPropertyChanged();
             }
         }
 
@@ -97,7 +97,7 @@ namespace ZS1Planv2.ViewModel
                 if (value == _LoadingText)
                     return;
                 _LoadingText = value;
-                OnPropertyChanged("LoadingText");
+                OnPropertyChanged();
             }
         }
 
@@ -110,7 +110,7 @@ namespace ZS1Planv2.ViewModel
                 if (value == _LoadingProgressRingActive)
                     return;
                 _LoadingProgressRingActive = value;
-                OnPropertyChanged("LoadingProgressRingActive");
+                OnPropertyChanged();
             }
         }
 
@@ -123,7 +123,7 @@ namespace ZS1Planv2.ViewModel
                 if (value == _DownloadingTimetableText)
                     return;
                 _DownloadingTimetableText = value;
-                OnPropertyChanged("DownloadingTimetableText");
+                OnPropertyChanged();
             }
         }
 
@@ -136,7 +136,7 @@ namespace ZS1Planv2.ViewModel
                 if (value == _DownloadTimetableButtonText)
                     return;
                 _DownloadTimetableButtonText = value;
-                OnPropertyChanged("DownloadTimetableButtonText");
+                OnPropertyChanged();
             }
         }
 
@@ -149,7 +149,7 @@ namespace ZS1Planv2.ViewModel
                 if (_DownloadingValue == value)
                     return;
                 _DownloadingValue = value;
-                OnPropertyChanged("DownloadingValue");
+                OnPropertyChanged();
             }
         }
 
@@ -164,15 +164,15 @@ namespace ZS1Planv2.ViewModel
 
                 if (value)
                 {
-                    NoInternetInfoText = Text.GetText(Text.TextId.NoInternet_Text_1);
-                    NoInternetButtonText = Text.GetText(Text.TextId.NoInternet_Text_2);
+                    NoInternetInfoText = Text.GetText(Text.TextId.MainPage_NoInternet_Text_1);
+                    NoInternetButtonText = Text.GetText(Text.TextId.MainPage_NoInternet_Text_2);
                     Blur = true;
                 }
                 else
                     Blur = false;
 
                 _NoInternet = value;
-                OnPropertyChanged("NoInternet");
+                OnPropertyChanged();
             }
         }
         private string _NoInternetInfoText;
@@ -184,7 +184,7 @@ namespace ZS1Planv2.ViewModel
                 if (value == _NoInternetInfoText)
                     return;
                 _NoInternetInfoText = value;
-                OnPropertyChanged("NoInternetInfoText");
+                OnPropertyChanged();
             }
         }
 
@@ -197,7 +197,7 @@ namespace ZS1Planv2.ViewModel
                 if (value == _NoInternetButtonText)
                     return;
                 _NoInternetButtonText = value;
-                OnPropertyChanged("NoInternetButtonText");
+                OnPropertyChanged();
             }
         }
 
@@ -213,11 +213,11 @@ namespace ZS1Planv2.ViewModel
 
                 if(value)
                 {
-                    DownloadErrorInfoText = Text.GetText(Text.TextId.Downloading_Error_Text_1);
-                    DownloadErrorButtonText = Text.GetText(Text.TextId.Downloading_Error_Text_2);
+                    DownloadErrorInfoText = Text.GetText(Text.TextId.MainPage_Downloading_Error_Text_1);
+                    DownloadErrorButtonText = Text.GetText(Text.TextId.MainPage_Downloading_Error_Text_2);
                 }
 
-                OnPropertyChanged("DownloadError");
+                OnPropertyChanged();
             }
         }
 
@@ -230,7 +230,7 @@ namespace ZS1Planv2.ViewModel
                 if (_DownloadErrorInfoText == value)
                     return;
                 _DownloadErrorInfoText = value;
-                OnPropertyChanged("DownloadErrorInfoText");
+                OnPropertyChanged();
             }
         }
 
@@ -243,7 +243,7 @@ namespace ZS1Planv2.ViewModel
                 if (_DownloadErrorButtonText == value)
                     return;
                 _DownloadErrorButtonText = value;
-                OnPropertyChanged("DownloadErrorButtonText");
+                OnPropertyChanged();
             }
         }
 
@@ -256,7 +256,7 @@ namespace ZS1Planv2.ViewModel
                 if (value == _Blur)
                     return;
                 _Blur = value;
-                OnPropertyChanged("Blur");
+                OnPropertyChanged();
             }
         }
 
@@ -264,7 +264,7 @@ namespace ZS1Planv2.ViewModel
 
         private async Task LoadTimetableAsync()
         {
-            LoadingText = Text.GetText(Text.TextId.Loading_Text_1);
+            LoadingText = Text.GetText(Text.TextId.MainPage_Loading_Text_1);
 
             Model.Plan.Plan plan = await new Model.Serializer.JSONSerializerService()
                 .LoadData<Model.Plan.Plan>();
@@ -273,7 +273,10 @@ namespace ZS1Planv2.ViewModel
             {
                 plan.SetAsMainInstance();
                 LoadingValue = 100;
-                //todo
+                await Task.Delay(250);
+
+                FrameHelper.NavigateToPage(typeof(View.TimetablePage), 
+                    new Model.Others.TimetablePageParameter(showDefaultPage: true));
                 return;
             }
 
@@ -290,7 +293,7 @@ namespace ZS1Planv2.ViewModel
             }
 
             TimetableDownloading = true;
-            DownloadingTimetableText = Text.GetText(Text.TextId.Downloading_Text_2);
+            DownloadingTimetableText = Text.GetText(Text.TextId.MainPage_Downloading_Text_2);
 
             PlanDownloader planDownloader = new PlanDownloader();
             RegisterDownloadProgressEvent(planDownloader);
@@ -321,10 +324,11 @@ namespace ZS1Planv2.ViewModel
                 DownloadError = true;
                 return;
             }
-
             plan.SetAsMainInstance();
+            await Task.Delay(250);
 
-            //todo savedsuccesfully
+            FrameHelper.NavigateToPage(typeof(View.TimetablePage),
+                    new Model.Others.TimetablePageParameter(showDefaultPage: true));
         }
 
         private void PlanDownloader_OnDownloadProgressChanged(string name, double percentage)

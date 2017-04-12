@@ -40,7 +40,6 @@ namespace ZS1Planv2
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
             Frame rootFrame = Window.Current.Content as Frame;
-            new Model.Application.FrameHelper().SetInstance(rootFrame);
 
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
@@ -48,6 +47,7 @@ namespace ZS1Planv2
             {
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
+                new Model.Application.FrameHelper().SetInstance(rootFrame);
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
 

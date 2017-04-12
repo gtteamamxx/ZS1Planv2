@@ -13,5 +13,8 @@ namespace ZS1Planv2.Model.Application
         public static Frame MainFrame => _Frame;
 
         public void SetInstance(Frame frame) => _Frame = frame;
+
+        public static void NavigateToPage(Type type, object parameter)
+            => _Frame.Navigate(type, parameter);
     }
 }

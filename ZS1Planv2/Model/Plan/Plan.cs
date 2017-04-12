@@ -11,12 +11,10 @@ namespace ZS1Planv2.Model.Plan
         public static Plan Instance;
 
         public List<LessonPlan> ClassesPlans;
-        public List<LessonPlan> TeachersPlans;
 
         public Plan()
         {
             ClassesPlans = new List<LessonPlan>();
-            TeachersPlans = new List<LessonPlan>();
         }
 
         public void SetAsMainInstance()

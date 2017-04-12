@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using ZS1Planv2.ViewModel;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -22,9 +23,14 @@ namespace ZS1Planv2.View
     /// </summary>
     public sealed partial class TimetablePage : Page
     {
+        private TimetablePageViewModel _Viewmodel => this.DataContext as TimetablePageViewModel;
+
         public TimetablePage()
         {
             this.InitializeComponent();
         }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+            => _Viewmodel.OnNavigatedTo(e);
     }
 }
