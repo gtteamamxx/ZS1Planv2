@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using ZS1Planv2.ViewModel;
+using ZS1Planv2.Model.Extension;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -28,6 +29,7 @@ namespace ZS1Planv2
         public MainPage()
         {
             this.InitializeComponent();
+            this.SetIsBackFromPageAllowed(false);
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

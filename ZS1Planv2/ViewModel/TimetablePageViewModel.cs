@@ -94,28 +94,15 @@ namespace ZS1Planv2.ViewModel
             }
         }
 
-        private double _MenuListViewHeight;
-        public double MenuListViewHeight
+        private double _ContentHeight;
+        public double ContentHeight
         {
-            get => _MenuListViewHeight;
+            get => _ContentHeight;
             set
             {
-                if (_MenuListViewHeight == value)
+                if (_ContentHeight == value)
                     return;
-                _MenuListViewHeight = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private double _MenuListViewWidth;
-        public double MenuListViewWidth
-        {
-            get => _MenuListViewWidth;
-            set
-            {
-                if (_MenuListViewWidth == value)
-                    return;
-                _MenuListViewWidth = value;
+                _ContentHeight = value;
                 OnPropertyChanged();
             }
         }
@@ -135,23 +122,36 @@ namespace ZS1Planv2.ViewModel
 
         private bool _ShowDefaultPage;
         private Model.Plan.LessonPlan _LessonPlanToShow;
+        private Model.Plan.LessonPlan _ActuallyShowingPlan;
 
         private void ShowLessonPlan(Model.Plan.LessonPlan plan)
         {
             if (plan == null)
+                plan = Model.Plan.Plan.Instance.ClassesPlans.First();
+
+            if(_ActuallyShowingPlan == plan)
+                return;
+
+            if(_ActuallyShowingPlan == null)
             {
-                TitleText = Text.GetText(Text.TextId.TimetablePage_Title_Text_2);
-                SelectedPlan = Model.Plan.Plan.Instance.ClassesPlans.First();
+                _ActuallyShowingPlan = plan;
+                TitleText = plan.Name;
+                ScrollViewerContent = plan.GenerateContentToDisplay(this);
                 return;
             }
 
-            TitleText = plan.Name;
-            ScrollViewerContent = plan.GenerateContentToDisplay(viewModel: this) as Grid;
+            FrameHelper.NavigateToPage(typeof(View.TimetablePage),
+                new TimetablePageParameter()
+                {
+                    ShowDefaultPage = plan == null,
+                    LessonPlanToShow = plan
+                });
         }
 
         private void PageLoaded()
         {
-            LoadItemsToMenu();
+            LoadLessonPlansToMenu();
+
             if (this._ShowDefaultPage)
             {
                 this._ShowDefaultPage = false;
@@ -163,9 +163,10 @@ namespace ZS1Planv2.ViewModel
             {
                 SelectedPlan = _LessonPlanToShow;
                 this._LessonPlanToShow = null;
+                return;
             }
-            else
-                ShowDefaultPage();
+
+            ShowDefaultPage();
         }
 
         public void OnNavigatedTo(NavigationEventArgs e)
@@ -189,8 +190,7 @@ namespace ZS1Planv2.ViewModel
         private void PageSizeChanged(object state)
         {
             double newHeight = (state as SizeChangedEventArgs).NewSize.Height;
-            MenuListViewHeight = newHeight - 50.0; //50.0 is RelativePanel at Top Height
-            _MenuListViewWidth = (state as SizeChangedEventArgs).NewSize.Width;
+            ContentHeight = newHeight - 50.0; //50.0 is RelativePanel at Top Height
         }
 
         private void SetPageTexts()
@@ -205,7 +205,7 @@ namespace ZS1Planv2.ViewModel
         private void MainMenuButton_Click()
             => SplitViewIsPaneOpen = !SplitViewIsPaneOpen;
 
-        private void LoadItemsToMenu()
+        private void LoadLessonPlansToMenu()
             => LessonsPlans = Model.Plan.Plan.Instance.ClassesPlans;
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = "")

@@ -15,6 +15,9 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Windows.UI.ViewManagement;
+using Windows.UI;
+using Windows.Foundation.Metadata;
 
 namespace ZS1Planv2
 {
@@ -51,6 +54,15 @@ namespace ZS1Planv2
                 new Model.Application.FrameHelper().SetInstance(rootFrame);
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
+
+                if(ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
+                {
+                    StatusBar.GetForCurrentView().BackgroundColor = Colors.Black;
+                    StatusBar.GetForCurrentView().ForegroundColor = Colors.White;
+                }
+
+                SystemNavigationManager.GetForCurrentView()
+                    .AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {

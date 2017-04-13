@@ -25,12 +25,14 @@ namespace ZS1Planv2.Model.Application
             }
 
             e.Handled = false;
+            App.Current.Exit();
         }
 
         private static bool IsGoBackFromPageAllowed(Frame mainAppFrame)
         {
             var currentPageType = mainAppFrame.CurrentSourcePageType;
-            bool isBackAllowed = ((Page)mainAppFrame.Content).GetIsBackFromPageAllowed();
+            bool isBeforePageMainpage = mainAppFrame.BackStackDepth == 1;
+            bool isBackAllowed = !isBeforePageMainpage && ((Page)mainAppFrame.Content).GetIsBackFromPageAllowed();
             return isBackAllowed;
         }
     }
