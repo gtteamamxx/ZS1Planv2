@@ -199,6 +199,9 @@ namespace ZS1Planv2.ViewModel
             TitleText = Text.GetText(Text.TextId.MainPage_Loading_Text_1);
         }
 
+        public void OnNavigatingFrom(NavigatingCancelEventArgs e)
+            => SplitViewIsPaneOpen = false;
+
         private void ShowDefaultPage()
             => SelectedPlan = null;
 

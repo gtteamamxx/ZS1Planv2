@@ -34,5 +34,8 @@ namespace ZS1Planv2.View
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
             => _Viewmodel.OnNavigatedTo(e);
+
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+            => _Viewmodel.OnNavigatingFrom(e);
     }
 }
