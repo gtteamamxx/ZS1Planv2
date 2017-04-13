@@ -126,8 +126,6 @@ namespace ZS1Planv2.ViewModel
             get => _SelectedPlan;
             set
             {
-                if (_SelectedPlan == value)
-                    return;
                 _SelectedPlan = value;
                 ShowLessonPlan(value);
                 OnPropertyChanged();
@@ -192,7 +190,7 @@ namespace ZS1Planv2.ViewModel
         {
             double newHeight = (state as SizeChangedEventArgs).NewSize.Height;
             MenuListViewHeight = newHeight - 50.0; //50.0 is RelativePanel at Top Height
-            _MenuListViewWidth = (state as SizeChangedEventArgs).NewSize.Width + 55.0;
+            _MenuListViewWidth = (state as SizeChangedEventArgs).NewSize.Width;
         }
 
         private void SetPageTexts()

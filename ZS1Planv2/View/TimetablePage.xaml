@@ -96,7 +96,7 @@
             </Setter>
         </Style>
     </Page.Resources>
-    
+
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <StackPanel>
             <RelativePanel Height="50">
@@ -125,39 +125,28 @@
             <SplitView DisplayMode="CompactOverlay"
                        CompactPaneLength="0"
                        OpenPaneLength="50"
-                       Height="{Binding MenuListViewHeight}"
                        IsPaneOpen="{Binding SplitViewIsPaneOpen, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-               
-                <SplitView.Content>
-                    <ScrollViewer ZoomMode="Enabled" MinZoomFactor="0.5" MaxZoomFactor="4">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
 
-                            <Grid HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"
-                                  Grid.Row="1">
-                                <Button Content="{Binding ScrollViewerContent}"
-                                        Style="{StaticResource EmptyButtonStyle}"
-                                        IsEnabled="False"/>
-                            </Grid>
-                        </Grid>
-                    </ScrollViewer>
+                <SplitView.Content>
+                        <ScrollViewer Content="{Binding ScrollViewerContent}"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      VerticalScrollBarVisibility="Visible"
+                                      HorizontalScrollBarVisibility="Visible"
+                                      ZoomMode="Enabled"/>
                 </SplitView.Content>
 
                 <SplitView.Pane>
                     <ScrollViewer VerticalScrollBarVisibility="Hidden"
                                   VerticalScrollMode="Enabled">
-                        
+
                         <ListView ItemsSource="{Binding LessonsPlans}"
-                                  SelectedItem="{Binding SelectedPlan,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                  SelectedItem="{Binding SelectedPlan, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                   HorizontalContentAlignment="Center"
                                   ShowsScrollingPlaceholders="False"
                                   Height="{Binding MenuListViewHeight}"
                                   ScrollViewer.VerticalScrollBarVisibility="Hidden">
-                            
+
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="model:LessonPlan">
                                     <Grid Height="30">
@@ -169,10 +158,10 @@
                                     </Grid>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
-                            
+
                         </ListView>
                     </ScrollViewer>
-                    
+
                 </SplitView.Pane>
             </SplitView>
         </StackPanel>

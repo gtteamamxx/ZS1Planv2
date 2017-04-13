@@ -132,6 +132,9 @@ namespace ZS1Planv2.Model.Network
                 lesson.LessonDetails[0] = pList.ElementAt(1).TextContent;
             }
 
+            if (lesson.LessonDetails[0].Length > 4)
+                lesson.LessonDetails[0] = spanList.First(p => p.ClassName == "n").TextContent;
+
             //sometimes, a class has not a number of class group in p.ClassName.TextContent
             //so we have to check it manually
             if (!lesson.LessonNames[0].Contains("1/2") && !lesson.LessonNames[0].Contains("2/2"))
@@ -163,8 +166,8 @@ namespace ZS1Planv2.Model.Network
                 for (int hour = 0; hour < hoursCount; hour++)
                 {
 
-                    Model.Plan.Lesson lesson = new Model.Plan.Lesson();
-                    var lessonHtml = hours.ElementAt(hour).Children[2 + d];
+                    Model.Plan.Lesson lesson = new Model.Plan.Lesson(d, hour);
+                    var lessonHtml = hours.ElementAt(hour).Children[Model.Plan.TimetableCoordinates.DAY_OFFSET + d];
 
                     if (lessonHtml.InnerHtml == NO_LESSON_STRING)
                     {
@@ -180,7 +183,7 @@ namespace ZS1Planv2.Model.Network
 
                 classLessonPlan.Days.Add(day);
 
-                OnDownloadProgressChanged?.Invoke($"{classLessonPlan.Name} [{d + 1} / {5}]", percent);
+                OnDownloadProgressChanged?.Invoke($"{classLessonPlan.Name} [{d + 1} / 5", percent);
                 await Task.Delay(10);
             }
             return true;

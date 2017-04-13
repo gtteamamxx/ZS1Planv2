@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:ZS1Planv2"
     xmlns:converters="using:ZS1Planv2.Converters"
-    RequestedTheme="Light">
+    RequestedTheme="Dark">
 
     <Application.Resources>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />

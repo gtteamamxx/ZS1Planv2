@@ -40,7 +40,10 @@
                 <behaviors:Blur Value="{Binding Blur, Converter={StaticResource BoolToBlurValueConverter}}" Duration="0" Delay="0" AutomaticallyStart="True" />
             </interactivity:Interaction.Behaviors>
 
-            <Image Stretch="Uniform" Source="ms-appx:///Images/zs1logo.png" />
+            <Grid Background="White">
+                <Image Stretch="Uniform" Source="ms-appx:///Images/zs1logo.png" />
+            </Grid>
+            
             <ProgressBar Value="{Binding LoadingValue}" Margin="25 25 25 0"/>
             <TextBlock Text="{Binding LoadingText}" Margin="0 15 0 0" HorizontalAlignment="Center"/>
             <ProgressRing IsActive="{Binding LoadingProgressRingActive}" Width="50" Height="50" 

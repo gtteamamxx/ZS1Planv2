@@ -8,6 +8,12 @@ namespace ZS1Planv2.Model.Application
 {
     public class Text
     {
+        public enum DataType
+        {
+            DayName,
+            Hour
+        }
+
         public enum TextId
         {
             MainPage_Loading_Text_1,
@@ -34,8 +40,23 @@ namespace ZS1Planv2.Model.Application
             "Piątek"
         };
 
-        public static string GetText(int dayId)
-            => _DayNames[dayId];
+        private static string[] _LessonHours =
+        {
+            "7:10 - 7:55",
+            "8:00 - 8:45",
+            "8:50 - 9:35",
+            "9:45 - 10:30",
+            "10:45 - 11:30",
+            "11:35 - 12:20",
+            "12:30 - 13:15",
+            "13:20 - 14:05",
+            "14:10 - 14:55",
+            "15:00 - 15:45",
+            "15:50 - 16:35"
+        };
+
+        public static string GetText(DataType dataType, int index)
+            => dataType == DataType.DayName ? _DayNames[index] : _LessonHours[index];
 
         public static string GetText(TextId textId)
         {

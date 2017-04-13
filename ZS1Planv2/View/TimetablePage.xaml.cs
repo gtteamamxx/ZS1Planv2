@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using ZS1Planv2.ViewModel;
+using ZS1Planv2.Model.Extension;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -28,6 +29,7 @@ namespace ZS1Planv2.View
         public TimetablePage()
         {
             this.InitializeComponent();
+            this.SetIsBackFromPageAllowed(true);
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
