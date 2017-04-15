@@ -33,6 +33,10 @@ namespace ZS1Planv2.ViewModel
         public RelayCommand<object> PageSizeChangedCommand =>
             _PageSizeChangedCommand ?? (_PageSizeChangedCommand = new RelayCommand<object>(o => PageSizeChanged(o)));
 
+        private RelayCommand _RefreshTimetableButtonCommand;
+        public RelayCommand RefreshTimetableButtonCommand =>
+            _RefreshTimetableButtonCommand ?? (_RefreshTimetableButtonCommand = new RelayCommand(() => RefreshTimetableButton_Click()));
+
         #endregion
 
         #region Properties
@@ -55,6 +59,17 @@ namespace ZS1Planv2.ViewModel
             set
             {
                 _MainMenuButtonText = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _RefreshTimetableButtonText;
+        public string RefreshTimetableButtonText
+        {
+            get => _RefreshTimetableButtonText;
+            set
+            {
+                _RefreshTimetableButtonText = value;
                 OnPropertyChanged();
             }
         }
@@ -137,6 +152,7 @@ namespace ZS1Planv2.ViewModel
                 _ActuallyShowingPlan = plan;
                 TitleText = plan.Name;
                 ScrollViewerContent = plan.GenerateContentToDisplay(this);
+                SelectedPlan = plan;
                 return;
             }
 
@@ -146,6 +162,12 @@ namespace ZS1Planv2.ViewModel
                     ShowDefaultPage = plan == null,
                     LessonPlanToShow = plan
                 });
+        }
+
+        private void RefreshTimetableButton_Click()
+        {
+            MainPageParameter changePageParameter = new MainPageParameter(downloadTimetable: true);
+            FrameHelper.NavigateToPage(typeof(MainPage), changePageParameter);
         }
 
         private void PageLoaded()
@@ -197,6 +219,7 @@ namespace ZS1Planv2.ViewModel
         {
             MainMenuButtonText = Text.GetText(Text.TextId.TimetablePage_MainMenuButton_Text_1);
             TitleText = Text.GetText(Text.TextId.MainPage_Loading_Text_1);
+            RefreshTimetableButtonText = Text.GetText(Text.TextId.TimetablePage_RefreshButton_Text_1);
         }
 
         public void OnNavigatingFrom(NavigatingCancelEventArgs e)

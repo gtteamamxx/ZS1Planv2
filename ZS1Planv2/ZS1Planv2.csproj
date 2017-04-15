@@ -110,6 +110,7 @@
     <Compile Include="Model\Network\InternetConnection.cs" />
     <Compile Include="Model\Network\PlanDownloader.cs" />
     <Compile Include="Model\Others\LessonPlanContentGenerator.cs" />
+    <Compile Include="Model\Others\MainPageParameter.cs" />
     <Compile Include="Model\Others\TimetablePageParameter.cs" />
     <Compile Include="Model\Plan\Day.cs" />
     <Compile Include="Model\Plan\Lesson.cs" />

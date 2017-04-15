@@ -46,6 +46,7 @@
                 <Grid RelativePanel.AlignHorizontalCenterWithPanel="True"
                       RelativePanel.AlignLeftWithPanel="True"
                       Name="MainMenuButtonGrid">
+                    
                     <TextBlock Style="{StaticResource TextBlockSegoeStyle}"
                                Text="{Binding MainMenuButtonText}" />
                     <Button Width="50"
@@ -62,6 +63,21 @@
                       RelativePanel.AlignVerticalCenterWithPanel="True">
                     <TextBlock Style="{StaticResource TextBlockTitleStyle}"
                                Text="{Binding TitleText, Converter={StaticResource LessonNameToViewNameConverter}}" />
+                </Grid>
+
+                <Grid RelativePanel.AlignHorizontalCenterWithPanel="True"
+                      RelativePanel.AlignRightWithPanel="True">
+
+                    <TextBlock Style="{StaticResource TextBlockSegoeStyle}"
+                               Text="{Binding RefreshTimetableButtonText}" />
+                    <Button Width="50"
+                            Height="50">
+                        <i:Interaction.Behaviors>
+                            <c:EventTriggerBehavior EventName="Click">
+                                <c:InvokeCommandAction Command="{Binding RefreshTimetableButtonCommand}" />
+                            </c:EventTriggerBehavior>
+                        </i:Interaction.Behaviors>
+                    </Button>
                 </Grid>
             </RelativePanel>
 

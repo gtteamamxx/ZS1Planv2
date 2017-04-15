@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Navigation;
 using ZS1Planv2.Model.Application;
 using ZS1Planv2.Model.Network;
+using ZS1Planv2.Model.Others;
 
 namespace ZS1Planv2.ViewModel
 {
@@ -369,10 +370,10 @@ namespace ZS1Planv2.ViewModel
 
         public void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (!(e.Parameter is bool))
+            if (!(e.Parameter is MainPageParameter))
                 return;
 
-            DownloadTimetable = ((bool)e.Parameter);
+            DownloadTimetable = ((MainPageParameter)e.Parameter).DownloadTimetable;
         }
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = "")

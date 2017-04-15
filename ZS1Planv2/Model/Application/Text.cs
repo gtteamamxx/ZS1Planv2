@@ -25,6 +25,7 @@ namespace ZS1Planv2.Model.Application
             MainPage_Downloading_Error_Text_1,
             MainPage_Downloading_Error_Text_2,
             TimetablePage_MainMenuButton_Text_1,
+            TimetablePage_RefreshButton_Text_1,
             TimetablePage_Title_Text_1,
             TimetablePage_Title_Text_2,
             TimetablePage_Grid_Text_1,
@@ -87,6 +88,9 @@ namespace ZS1Planv2.Model.Application
 
                 case TextId.TimetablePage_MainMenuButton_Text_1:
                     return "\xE700";
+                case TextId.TimetablePage_RefreshButton_Text_1:
+                    return "\xE117";
+
                 case TextId.TimetablePage_Title_Text_1:
                     return "Plan lekcji";
                 case TextId.TimetablePage_Title_Text_2:
