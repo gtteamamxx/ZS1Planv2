@@ -8,6 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:ZS1Planv2.Model.Plan"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:behaviors="using:ZS1Planv2.Behaviors"
     xmlns:c="using:Microsoft.Xaml.Interactions.Core"
     mc:Ignorable="d">
 
@@ -88,7 +89,11 @@
                                   ShowsScrollingPlaceholders="False"
                                   Height="{Binding ContentHeight}"
                                   ScrollViewer.VerticalScrollBarVisibility="Hidden">
-
+                            
+                            <i:Interaction.Behaviors>
+                                <behaviors:ListViewScrollBehavior />
+                            </i:Interaction.Behaviors>
+                            
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="model:LessonPlan">
                                     <Grid Height="50"
