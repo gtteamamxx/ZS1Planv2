@@ -19,6 +19,19 @@ namespace ZS1Planv2.ViewModel
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public TimetablePageViewModel()
+        {
+            MVVMMessagerService.RegisterReceiver<bool>(typeof(TimetablePageViewModel), refreshTimetable =>
+            {
+                if(refreshTimetable)
+                {
+                    Model.Plan.LessonPlan tempPlan = _ActuallyShowingPlan;
+                    _ActuallyShowingPlan = null;
+                    ShowLessonPlan(tempPlan);
+                }
+            });
+        }
+
         #region Commands
 
         private RelayCommand _PageLoadedCommand;
@@ -167,7 +180,7 @@ namespace ZS1Planv2.ViewModel
             {
                 _ActuallyShowingPlan = plan;
                 TitleText = plan.Name;
-                ScrollViewerContent = plan.GenerateContentToDisplay(this);
+                ScrollViewerContent = plan.GenerateContentToDisplay();
                 SelectedPlan = plan;
                 return;
             }

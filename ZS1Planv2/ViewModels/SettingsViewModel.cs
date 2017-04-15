@@ -158,8 +158,13 @@ namespace ZS1Planv2.ViewModel
 
         private void SaveSettings()
         {
+            bool tempHighlightLesson = SettingsManager.GetSetting<bool?>(SettingsManager.SettingsType.Hightlight_Lessons) ?? false;
             SettingsManager.SetSetting(SettingsManager.SettingsType.Start_Plan, SelectedTimetable.Name);
             SettingsManager.SetSetting(SettingsManager.SettingsType.Hightlight_Lessons, ToogleSwitchIsOn);
+
+            bool isRefreshTimetablePageNeeded = tempHighlightLesson != ToogleSwitchIsOn;
+
+            MVVMMessagerService.SendMessage(typeof(ViewModel.TimetablePageViewModel), isRefreshTimetablePageNeeded);
         }
 
         public void OnPropertyChanged([CallerMemberName] string propertyName = "")

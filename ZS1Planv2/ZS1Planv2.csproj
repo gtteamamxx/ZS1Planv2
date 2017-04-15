@@ -104,6 +104,7 @@
     </Compile>
     <Compile Include="Model\Application\BackButtonHelper.cs" />
     <Compile Include="Model\Application\FrameHelper.cs" />
+    <Compile Include="Model\Application\MVVMMessagerService.cs" />
     <Compile Include="Model\Application\SettingsManager.cs" />
     <Compile Include="Model\Application\Text.cs" />
     <Compile Include="Model\Extension\PageExtension.cs" />
@@ -120,9 +121,9 @@
     <Compile Include="Model\Plan\TimetableCoordinates.cs" />
     <Compile Include="Model\Serializer\JSONSerializerService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModel\MainPageViewModel.cs" />
-    <Compile Include="ViewModel\SettingsViewModel.cs" />
-    <Compile Include="ViewModel\TimetablePageViewModel.cs" />
+    <Compile Include="ViewModels\MainPageViewModel.cs" />
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
+    <Compile Include="ViewModels\TimetablePageViewModel.cs" />
     <Compile Include="View\SettingsUserControl.xaml.cs">
       <DependentUpon>SettingsUserControl.xaml</DependentUpon>
     </Compile>

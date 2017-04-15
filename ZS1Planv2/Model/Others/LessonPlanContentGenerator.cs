@@ -19,25 +19,30 @@ namespace ZS1Planv2.Model.Others
     public static class LessonPlanContentGenerator
     {
         private static ApplicationTheme _CurrentTheme => App.Current.RequestedTheme;
+
         private static readonly Brush _INFO_BRUSH = new SolidColorBrush(
             _CurrentTheme == ApplicationTheme.Light ? Colors.LightCyan : Color.FromArgb(127, 0, 150, 0));
+
         private static readonly Brush _BCKG_BRUSH = new SolidColorBrush(Colors.Transparent);
+
         private static readonly Brush _BORDER_BRUSH = new SolidColorBrush(Colors.Brown);
+        private static readonly Brush _BORDER_ACTUALLY_BRUSH = new SolidColorBrush(Colors.LightGreen);
+
         private static readonly Brush _PLACE_FONT_BRUSH = new SolidColorBrush(
             _CurrentTheme == ApplicationTheme.Light ? Colors.Red : Colors.Cyan);
 
-        public static object GenerateContentToDisplay(this LessonPlan plan, TimetablePageViewModel viewModel)
+        public static object GenerateContentToDisplay(this LessonPlan plan)
         {
             Grid mainGrid = new Grid();
 
             mainGrid.AddRowDefinitions(plan);
-            mainGrid.AddColumnDefinitions(plan);
+            mainGrid.AddColumnDefinitions();
             mainGrid.AddPlanSchemeToGrid(plan);
 
             return mainGrid;
         }
 
-        private static void AddColumnDefinitions(this Grid grid, LessonPlan plan)
+        private static void AddColumnDefinitions(this Grid grid)
         {
             int columnsNum = 7;
 
@@ -73,13 +78,15 @@ namespace ZS1Planv2.Model.Others
             };
 
             Brush backgroundForGrid = _BCKG_BRUSH;
+            Brush borderBrushForGrid = _BORDER_BRUSH;
 
             SetTextToTextBlockByLessonPlan(textBlock, ref backgroundForGrid, row, column, plan);
+            CheckIfGridShouldBeHighlighted(row, ref borderBrushForGrid);
 
             Grid lessonGrid = new Grid()
             {
-                BorderBrush = _BORDER_BRUSH,
-                BorderThickness = new Windows.UI.Xaml.Thickness(1),
+                BorderBrush = borderBrushForGrid,
+                BorderThickness = new Thickness(1),
                 Background = backgroundForGrid
             };
 
@@ -90,6 +97,37 @@ namespace ZS1Planv2.Model.Others
 
             grid.Children.Add(lessonGrid);
         }
+
+        private static void CheckIfGridShouldBeHighlighted(int row, ref Brush borderBrushForGrid)
+        {
+            if (row == 0)
+                return;
+
+            if (!CheckIfSettingsAllowHighlighting())
+                return;
+
+            TimeSpan timeNow = DateTime.Now.TimeOfDay;
+            int actualHour = timeNow.Hours;
+            int actualMinute = timeNow.Minutes;
+
+            //checks checking actual hour and minute which lesson actually is 
+            int actualLesson = actualHour == 7 ? 1 : (actualHour == 8 && actualMinute < 55) ? 2 :
+                ((actualHour == 8 && actualMinute >= 55) || actualHour == 9 && actualMinute < 45) ? 3 :
+                ((actualHour == 9 && actualMinute >= 45) || actualHour == 10 && actualMinute < 45) ? 4 :
+                ((actualHour == 10 && actualMinute >= 45) || actualHour == 11 && actualMinute < 35) ? 5 :
+                ((actualHour == 11 && actualMinute >= 35) || actualHour == 12 && actualMinute < 30) ? 6 :
+                ((actualHour == 12 && actualMinute >= 30) || actualHour == 13 && actualMinute < 20) ? 7 :
+                ((actualHour == 13 && actualMinute >= 20) || actualHour == 14 && actualMinute < 10) ? 8 :
+                ((actualHour == 14 && actualMinute >= 10)) ? 9 :
+                ((actualHour == 15 && actualMinute >= 0) || actualHour == 15 && actualMinute < 50) ? 10 :
+                ((actualHour == 15 && actualMinute >= 50) || actualHour >= 16) ? 11 : 0;
+
+            if (row == actualLesson)
+                borderBrushForGrid = _BORDER_ACTUALLY_BRUSH;
+        }
+
+        private static bool CheckIfSettingsAllowHighlighting()
+            => Model.Application.SettingsManager.GetSetting<bool?>(SettingsManager.SettingsType.Hightlight_Lessons) ?? false;
 
         private static void AddPlanSchemeToGrid(this Grid grid, LessonPlan plan)
         {
@@ -114,11 +152,11 @@ namespace ZS1Planv2.Model.Others
                     textBlock.TextAlignment = TextAlignment.Center;
                 }
 
-                textBlock.SetDetailText(ref gridBackground, row, column, plan);
+                textBlock.SetDetailText(row, column, plan);
             }
         }
 
-        private static void SetDetailText(this TextBlock textBlock, ref Brush backgroundForGrid, int row, int column,
+        private static void SetDetailText(this TextBlock textBlock, int row, int column,
             Model.Plan.LessonPlan plan)
         {
             if (column == 0)
@@ -142,7 +180,7 @@ namespace ZS1Planv2.Model.Others
             }
         }
 
-        private static void SetRowZeroText(this TextBlock textBlock,ref Brush backgroundForGrid, int column)
+        private static void SetRowZeroText(this TextBlock textBlock, ref Brush backgroundForGrid, int column)
         {
             string text = string.Empty;
             backgroundForGrid = _INFO_BRUSH;
