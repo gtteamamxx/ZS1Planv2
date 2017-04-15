@@ -30,7 +30,7 @@ namespace ZS1Planv2.Model.Application
 
         private static bool IsGoBackFromPageAllowed(Frame mainAppFrame)
         {
-            var currentPageType = mainAppFrame.CurrentSourcePageType;
+            Type currentPageType = mainAppFrame.CurrentSourcePageType;
             bool isBeforePageMainpage = mainAppFrame.BackStackDepth == 1;
             bool isBackAllowed = !isBeforePageMainpage && ((Page)mainAppFrame.Content).GetIsBackFromPageAllowed();
             return isBackAllowed;

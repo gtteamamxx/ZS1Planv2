@@ -2,8 +2,8 @@
 using AngleSharp.Parser.Html;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ZS1Planv2.Model.Network
@@ -16,6 +16,7 @@ namespace ZS1Planv2.Model.Network
         }
 
         public delegate void DownloadProgressChanged(string name, double percentage);
+
         public event DownloadProgressChanged OnDownloadProgressChanged;
 
         private enum Plans
@@ -45,13 +46,14 @@ namespace ZS1Planv2.Model.Network
 
                 IEnumerable<IElement> plans = timetablesDocument.QuerySelectorAll("ul").Take(2);
 
-                return new Model.Plan.Plan()
+                return new Model.Plan.Plan
                 {
                     ClassesPlans = await DownloadClassesPlanAsync(plans.ElementAt((int)Plans.Classes_Plans)),
                 };
             }
-            catch
+            catch (Exception ex)
             {
+                Debug.WriteLine(ex.Message);
                 return null;
             }
         }
@@ -83,6 +85,7 @@ namespace ZS1Planv2.Model.Network
                     name = pList.ElementAt(1).TextContent;
                     detail = spanList.Where(p => p.ClassName == "n").ElementAt(1).TextContent;
                     break;
+
                 case 3:
                     name = pList.ElementAt(1).TextContent;
                     if (name.Length == 3)
@@ -94,6 +97,7 @@ namespace ZS1Planv2.Model.Network
                         detail = pList.ElementAt(2).TextContent;
                     isCheckNameNeeded = true;
                     break;
+
                 case 4:
                     name = pList.ElementAt(2).TextContent;
                     detail = pList.ElementAt(3).TextContent;
@@ -113,6 +117,7 @@ namespace ZS1Planv2.Model.Network
 
             return true;
         }
+
         private void GetFirstLessonDetail
             (IElement lessonHtml, IEnumerable<IElement> pList, IEnumerable<IElement> sList,
             IEnumerable<IElement> spanList, Model.Plan.Lesson lesson)
@@ -165,7 +170,6 @@ namespace ZS1Planv2.Model.Network
 
                 for (int hour = 0; hour < hoursCount; hour++)
                 {
-
                     Model.Plan.Lesson lesson = new Model.Plan.Lesson(d, hour);
                     var lessonHtml = hours.ElementAt(hour).Children[Model.Plan.TimetableCoordinates.DAY_OFFSET + d];
 
@@ -223,12 +227,12 @@ namespace ZS1Planv2.Model.Network
 
                 return classesPlans;
             }
-            catch
+            catch (Exception ex)
             {
+                Debug.WriteLine(ex.Message);
                 return null;
             }
         }
-
 
         private void CreateParser()
             => _Parser = new HtmlParser();
