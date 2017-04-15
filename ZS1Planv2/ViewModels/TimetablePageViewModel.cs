@@ -42,10 +42,6 @@ namespace ZS1Planv2.ViewModel
         public RelayCommand MainMenuButtonCommand =>
             _MainMenuButtonCommand ?? (_MainMenuButtonCommand = new RelayCommand(() => MainMenuButton_Click()));
 
-        private RelayCommand<object> _PageSizeChangedCommand;
-        public RelayCommand<object> PageSizeChangedCommand =>
-            _PageSizeChangedCommand ?? (_PageSizeChangedCommand = new RelayCommand<object>(o => PageSizeChanged(o)));
-
         private RelayCommand _RefreshTimetableButtonCommand;
         public RelayCommand RefreshTimetableButtonCommand =>
             _RefreshTimetableButtonCommand ?? (_RefreshTimetableButtonCommand = new RelayCommand(() => RefreshTimetableButton_Click()));
@@ -129,19 +125,6 @@ namespace ZS1Planv2.ViewModel
                 if (_LessonsPlans == value)
                     return;
                 _LessonsPlans = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private double _ContentHeight;
-        public double ContentHeight
-        {
-            get => _ContentHeight;
-            set
-            {
-                if (_ContentHeight == value)
-                    return;
-                _ContentHeight = value;
                 OnPropertyChanged();
             }
         }
@@ -236,12 +219,6 @@ namespace ZS1Planv2.ViewModel
             }
 
             this._LessonPlanToShow = pageParameter.LessonPlanToShow;
-        }
-
-        private void PageSizeChanged(object state)
-        {
-            double newHeight = (state as SizeChangedEventArgs).NewSize.Height;
-            ContentHeight = newHeight - 50.0; //50.0 is RelativePanel at Top Height
         }
 
         private void SetPageTexts()

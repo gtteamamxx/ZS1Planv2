@@ -16,9 +16,6 @@
         <c:EventTriggerBehavior EventName="Loaded">
             <c:InvokeCommandAction Command="{Binding PageLoadedCommand}"/>
         </c:EventTriggerBehavior>
-        <c:EventTriggerBehavior EventName="SizeChanged">
-            <c:InvokeCommandAction Command="{Binding PageSizeChangedCommand}" />
-        </c:EventTriggerBehavior>
     </i:Interaction.Behaviors>
 
     <Page.DataContext>
@@ -41,114 +38,115 @@
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <StackPanel>
-            <RelativePanel Height="50">
-                <Grid RelativePanel.AlignHorizontalCenterWithPanel="True"
-                      RelativePanel.AlignLeftWithPanel="True"
-                      Name="MainMenuButtonGrid">
-                    
-                    <TextBlock Style="{StaticResource TextBlockSegoeStyle}"
-                               Text="{Binding MainMenuButtonText}" />
-                    
-                    <Button Width="50"
-                            Height="50">
-                        <i:Interaction.Behaviors>
-                            <c:EventTriggerBehavior EventName="Click">
-                                <c:InvokeCommandAction Command="{Binding MainMenuButtonCommand}" />
-                            </c:EventTriggerBehavior>
-                        </i:Interaction.Behaviors>
-                    </Button>
-                </Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
+        <RelativePanel Height="50">
+            <Grid RelativePanel.AlignHorizontalCenterWithPanel="True"
+                  RelativePanel.AlignLeftWithPanel="True"
+                  Name="MainMenuButtonGrid">
 
-                <Grid RelativePanel.RightOf="MainMenuButtonGrid"
-                      RelativePanel.AlignVerticalCenterWithPanel="True">
-                    <TextBlock Style="{StaticResource TextBlockTitleStyle}"
-                               Text="{Binding TitleText, Converter={StaticResource LessonNameToViewNameConverter}}" />
-                </Grid>
+                <TextBlock Style="{StaticResource TextBlockSegoeStyle}"
+                           Text="{Binding MainMenuButtonText}" />
 
-                <Grid RelativePanel.AlignHorizontalCenterWithPanel="True"
-                      RelativePanel.LeftOf="RefreshButtonGrid">
-                    
-                    <TextBlock Style="{StaticResource TextBlockSegoeStyle}"
-                               Text="{Binding SettingsButtonText}" />
-                    
-                    <Button Width="50"
-                            Height="50">
-                        <Button.Flyout>
-                            <Flyout>
-                                <local:SettingsUserControl />
-                            </Flyout>
-                        </Button.Flyout>
-                    </Button>
-                    
-                </Grid>
-                
-                <Grid RelativePanel.AlignHorizontalCenterWithPanel="True"
-                      RelativePanel.AlignRightWithPanel="True"
-                      Name="RefreshButtonGrid">
+                <Button Width="50"
+                        Height="50">
+                    <i:Interaction.Behaviors>
+                        <c:EventTriggerBehavior EventName="Click">
+                            <c:InvokeCommandAction Command="{Binding MainMenuButtonCommand}" />
+                        </c:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
+                </Button>
+            </Grid>
 
-                    <TextBlock Style="{StaticResource TextBlockSegoeStyle}"
+            <Grid RelativePanel.RightOf="MainMenuButtonGrid"
+                  RelativePanel.AlignVerticalCenterWithPanel="True">
+                <TextBlock Style="{StaticResource TextBlockTitleStyle}"
+                           Text="{Binding TitleText, Converter={StaticResource LessonNameToViewNameConverter}}" />
+            </Grid>
+
+            <Grid RelativePanel.AlignHorizontalCenterWithPanel="True"
+                  RelativePanel.LeftOf="RefreshButtonGrid">
+
+                <TextBlock Style="{StaticResource TextBlockSegoeStyle}"
+                           Text="{Binding SettingsButtonText}" />
+
+                <Button Width="50"
+                        Height="50">
+                    <Button.Flyout>
+                        <Flyout>
+                            <local:SettingsUserControl />
+                        </Flyout>
+                    </Button.Flyout>
+                </Button>
+
+            </Grid>
+
+            <Grid RelativePanel.AlignHorizontalCenterWithPanel="True"
+                  RelativePanel.AlignRightWithPanel="True"
+                  Name="RefreshButtonGrid">
+
+                <TextBlock Style="{StaticResource TextBlockSegoeStyle}"
                                Text="{Binding RefreshTimetableButtonText}" />
-                    <Button Width="50"
-                            Height="50">
+                <Button Width="50"
+                        Height="50">
+                    <i:Interaction.Behaviors>
+                        <c:EventTriggerBehavior EventName="Click">
+                            <c:InvokeCommandAction Command="{Binding RefreshTimetableButtonCommand}" />
+                        </c:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
+                </Button>
+            </Grid>
+        </RelativePanel>
+
+        <SplitView DisplayMode="CompactOverlay"
+                   CompactPaneLength="0"
+                   OpenPaneLength="50"
+                   Grid.Row="1"
+                   IsPaneOpen="{Binding SplitViewIsPaneOpen, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+
+            <SplitView.Content>
+                <ScrollViewer Content="{Binding ScrollViewerContent}"
+                              HorizontalAlignment="Center"
+                              Margin="20"
+                              VerticalScrollBarVisibility="Visible"
+                              HorizontalScrollBarVisibility="Visible"
+                              ZoomMode="Enabled"/>
+            </SplitView.Content>
+
+            <SplitView.Pane>
+                <ScrollViewer VerticalScrollBarVisibility="Hidden"
+                              VerticalScrollMode="Enabled">
+
+                    <ListView ItemsSource="{Binding LessonsPlans}"
+                              SelectedItem="{Binding SelectedPlan, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                              HorizontalContentAlignment="Center"
+                              ShowsScrollingPlaceholders="False"
+                              ScrollViewer.VerticalScrollBarVisibility="Hidden">
+
                         <i:Interaction.Behaviors>
-                            <c:EventTriggerBehavior EventName="Click">
-                                <c:InvokeCommandAction Command="{Binding RefreshTimetableButtonCommand}" />
-                            </c:EventTriggerBehavior>
+                            <behaviors:ListViewScrollBehavior />
                         </i:Interaction.Behaviors>
-                    </Button>
-                </Grid>
-            </RelativePanel>
 
-            <SplitView DisplayMode="CompactOverlay"
-                       CompactPaneLength="0"
-                       OpenPaneLength="50"
-                       IsPaneOpen="{Binding SplitViewIsPaneOpen, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-
-                <SplitView.Content>
-                        <ScrollViewer Content="{Binding ScrollViewerContent}"
-                                      HorizontalAlignment="Center"
-                                      Margin="20"
-                                      VerticalScrollBarVisibility="Visible"
-                                      HorizontalScrollBarVisibility="Visible"
-                                      ZoomMode="Enabled"/>
-                </SplitView.Content>
-
-                <SplitView.Pane>
-                    <ScrollViewer VerticalScrollBarVisibility="Hidden"
-                                  VerticalScrollMode="Enabled">
-
-                        <ListView ItemsSource="{Binding LessonsPlans}"
-                                  SelectedItem="{Binding SelectedPlan, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                  HorizontalContentAlignment="Center"
-                                  ShowsScrollingPlaceholders="False"
-                                  Height="{Binding ContentHeight}"
-                                  ScrollViewer.VerticalScrollBarVisibility="Hidden">
-                            
-                            <i:Interaction.Behaviors>
-                                <behaviors:ListViewScrollBehavior />
-                            </i:Interaction.Behaviors>
-                            
-                            <ListView.ItemTemplate>
-                                <DataTemplate x:DataType="model:LessonPlan">
-                                    <Grid Height="50"
-                                          BorderBrush="Gray"
-                                          Margin="-10 0 0 0"
-                                          BorderThickness="1">
-                                        <TextBlock Text="{Binding Name}"
-                                                   VerticalAlignment="Center"
-                                                   HorizontalAlignment="Center"
-                                                   TextAlignment="Center"
-                                                   Width="46"/>
-                                    </Grid>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-
-                        </ListView>
-                    </ScrollViewer>
-
-                </SplitView.Pane>
-            </SplitView>
-        </StackPanel>
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="model:LessonPlan">
+                                <Grid Height="50"
+                                      BorderBrush="Gray"
+                                      Margin="-10 0 0 0"
+                                      BorderThickness="1">
+                                    <TextBlock Text="{Binding Name}"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Center"
+                                               TextAlignment="Center"
+                                               Width="44"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </ScrollViewer>
+            </SplitView.Pane>
+        </SplitView>
     </Grid>
 </Page>
