@@ -39,7 +39,7 @@ namespace ZS1Planv2.Model.Application
             if (pagesToReceiveType.Count() == 0)
                 return;
 
-            foreach(KeyValuePair<Type, object> receiver in _RegisteredReceivers)
+            foreach (KeyValuePair<Type, object> receiver in _RegisteredReceivers)
             {
                 if (!pagesToReceiveType.Any(p => p == receiver.Key))
                     continue;
@@ -58,5 +58,8 @@ namespace ZS1Planv2.Model.Application
                     methodInfo.Invoke(_event, parameters);
             }
         }
+
+        public static void UnregisterReceiver(Type sourcePageType)
+            => _RegisteredReceivers.Remove(sourcePageType);
     }
 }

@@ -46,6 +46,10 @@ namespace ZS1Planv2.ViewModel
         public RelayCommand RefreshTimetableButtonCommand =>
             _RefreshTimetableButtonCommand ?? (_RefreshTimetableButtonCommand = new RelayCommand(() => RefreshTimetableButton_Click()));
 
+        private RelayCommand<object> _PageUnloadedCommand;
+        public RelayCommand<object> PageUnloadedCommand =>
+            _PageUnloadedCommand ?? (_PageUnloadedCommand = new RelayCommand<object>((ob) => PageUnloaded(ob)));
+
         #endregion
 
         #region Properties
@@ -231,6 +235,9 @@ namespace ZS1Planv2.ViewModel
 
         public void OnNavigatingFrom(NavigatingCancelEventArgs e)
             => SplitViewIsPaneOpen = false;
+
+        private void PageUnloaded(object ob)
+            => MVVMMessagerService.UnregisterReceiver(typeof(TimetablePageViewModel));
 
         private void ShowDefaultPage()
             => SelectedPlan = null;

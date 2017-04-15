@@ -32,6 +32,10 @@ namespace ZS1Planv2.Model.Application
         {
             Type currentPageType = mainAppFrame.CurrentSourcePageType;
             bool isBeforePageMainpage = mainAppFrame.BackStackDepth == 1;
+
+            if (mainAppFrame.BackStack[0].SourcePageType == typeof(MainPage))
+                isBeforePageMainpage = true;
+
             bool isBackAllowed = !isBeforePageMainpage && ((Page)mainAppFrame.Content).GetIsBackFromPageAllowed();
             return isBackAllowed;
         }
