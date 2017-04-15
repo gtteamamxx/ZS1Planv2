@@ -63,6 +63,17 @@ namespace ZS1Planv2.ViewModel
             }
         }
 
+        private string _SettingsButtonText;
+        public string SettingsButtonText
+        {
+            get => _SettingsButtonText;
+            set
+            {
+                _SettingsButtonText = value;
+                OnPropertyChanged();
+            }
+        }
+
         private string _RefreshTimetableButtonText;
         public string RefreshTimetableButtonText
         {
@@ -142,7 +153,12 @@ namespace ZS1Planv2.ViewModel
         private void ShowLessonPlan(Model.Plan.LessonPlan plan)
         {
             if (plan == null)
-                plan = Model.Plan.Plan.Instance.ClassesPlans.First();
+            {
+                Model.Plan.LessonPlan planToShow = Model.Plan.Plan.Instance.ClassesPlans.FirstOrDefault(
+                    p => p.Name == Model.Application.SettingsManager.GetSetting<string>(SettingsManager.SettingsType.Start_Plan));
+
+                plan = planToShow ?? Model.Plan.Plan.Instance.ClassesPlans.First();
+            }
 
             if(_ActuallyShowingPlan == plan)
                 return;
@@ -220,6 +236,7 @@ namespace ZS1Planv2.ViewModel
             MainMenuButtonText = Text.GetText(Text.TextId.TimetablePage_MainMenuButton_Text_1);
             TitleText = Text.GetText(Text.TextId.MainPage_Loading_Text_1);
             RefreshTimetableButtonText = Text.GetText(Text.TextId.TimetablePage_RefreshButton_Text_1);
+            SettingsButtonText = Text.GetText(Text.TextId.TimetablePage_SettingsButton_Text_1);
         }
 
         public void OnNavigatingFrom(NavigatingCancelEventArgs e)

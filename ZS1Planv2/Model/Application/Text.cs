@@ -25,11 +25,18 @@ namespace ZS1Planv2.Model.Application
             MainPage_Downloading_Error_Text_1,
             MainPage_Downloading_Error_Text_2,
             TimetablePage_MainMenuButton_Text_1,
+            TimetablePage_SettingsButton_Text_1,
             TimetablePage_RefreshButton_Text_1,
             TimetablePage_Title_Text_1,
             TimetablePage_Title_Text_2,
             TimetablePage_Grid_Text_1,
-            TimetablePage_Grid_Text_2
+            TimetablePage_Grid_Text_2,
+            SettingsUserControl_Text_1,
+            SettingsUserControl_Text_2,
+            SettingsUserControl_Text_3,
+            SettingsUserControl_Text_4,
+            SettingsUserControl_Text_5,
+            SettingsUserControl_Text_6
         }
 
         private static string[] _DayNames = new string[]
@@ -88,6 +95,8 @@ namespace ZS1Planv2.Model.Application
 
                 case TextId.TimetablePage_MainMenuButton_Text_1:
                     return "\xE700";
+                case TextId.TimetablePage_SettingsButton_Text_1:
+                    return "\xE713";
                 case TextId.TimetablePage_RefreshButton_Text_1:
                     return "\xE117";
 
@@ -100,6 +109,19 @@ namespace ZS1Planv2.Model.Application
                     return "Nr.";
                 case TextId.TimetablePage_Grid_Text_2:
                     return "Godz.";
+
+                case TextId.SettingsUserControl_Text_1:
+                    return "Startowy plan lekcji:";
+                case TextId.SettingsUserControl_Text_2:
+                    return "Podświetl aktualne lekcje:";
+                case TextId.SettingsUserControl_Text_3:
+                    return "Włączone";
+                case TextId.SettingsUserControl_Text_4:
+                    return "Wyłączone";
+                case TextId.SettingsUserControl_Text_5:
+                    return "Zapisz";
+                case TextId.SettingsUserControl_Text_6:
+                    return "Zapisano!";
 
                 default:
                     return "Error";

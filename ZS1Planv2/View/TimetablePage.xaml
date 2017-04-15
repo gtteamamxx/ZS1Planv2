@@ -49,6 +49,7 @@
                     
                     <TextBlock Style="{StaticResource TextBlockSegoeStyle}"
                                Text="{Binding MainMenuButtonText}" />
+                    
                     <Button Width="50"
                             Height="50">
                         <i:Interaction.Behaviors>
@@ -66,7 +67,25 @@
                 </Grid>
 
                 <Grid RelativePanel.AlignHorizontalCenterWithPanel="True"
-                      RelativePanel.AlignRightWithPanel="True">
+                      RelativePanel.LeftOf="RefreshButtonGrid">
+                    
+                    <TextBlock Style="{StaticResource TextBlockSegoeStyle}"
+                               Text="{Binding SettingsButtonText}" />
+                    
+                    <Button Width="50"
+                            Height="50">
+                        <Button.Flyout>
+                            <Flyout>
+                                <local:SettingsUserControl />
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
+                    
+                </Grid>
+                
+                <Grid RelativePanel.AlignHorizontalCenterWithPanel="True"
+                      RelativePanel.AlignRightWithPanel="True"
+                      Name="RefreshButtonGrid">
 
                     <TextBlock Style="{StaticResource TextBlockSegoeStyle}"
                                Text="{Binding RefreshTimetableButtonText}" />
