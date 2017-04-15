@@ -22,6 +22,8 @@ namespace ZS1Planv2.Model.Application
         {
             if (_RegisteredReceivers == null)
                 _RegisteredReceivers = new Dictionary<Type, object>();
+            if (_RegisteredReceivers.Any(p => p.Key == sourcePageType))
+                return;
             _RegisteredReceivers.Add(sourcePageType, action);
         }
 
