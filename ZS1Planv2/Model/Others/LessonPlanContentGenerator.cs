@@ -188,10 +188,10 @@ namespace ZS1Planv2.Model.Others
             switch (column)
             {
                 case 0:
-                    text = Text.GetText(Text.TextId.TimetablePage_Grid_Text_1);
+                    text = Text.GetText(Text.TextId.TimetablePage_Lesson_Number_Text_1);
                     break;
                 case 1:
-                    text = Text.GetText(Text.TextId.TimetablePage_Grid_Text_2);
+                    text = Text.GetText(Text.TextId.TimetablePage_Hour_Text_1);
                     break;
                 default:
                     text = Text.GetText(Text.DataType.DayName, column - TimetableCoordinates.DAY_OFFSET);

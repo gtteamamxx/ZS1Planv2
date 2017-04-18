@@ -77,8 +77,8 @@ namespace ZS1Planv2.ViewModel
                 _ToogleSwitchIsOn = value;
 
                 ToogleSwitchText = Text.GetText(value
-                    ? Text.TextId.SettingsUserControl_Text_3
-                    : Text.TextId.SettingsUserControl_Text_4);
+                    ? Text.TextId.SettingsUserControl_On_Text_1
+                    : Text.TextId.SettingsUserControl_Off_Text_1);
 
                 OnPropertyChanged();
             }
@@ -135,10 +135,10 @@ namespace ZS1Planv2.ViewModel
 
         private void UpdateTexts()
         {
-            StartTimetableText = Text.GetText(Text.TextId.SettingsUserControl_Text_1);
-            HightlightActuallyLessonsText = Text.GetText(Text.TextId.SettingsUserControl_Text_2);
-            SaveText = Text.GetText(Text.TextId.SettingsUserControl_Text_5);
-            SaveCompletedText = Text.GetText(Text.TextId.SettingsUserControl_Text_6);
+            StartTimetableText = Text.GetText(Text.TextId.SettingsUserControl_Start_Lesson_Plan_Text_1);
+            HightlightActuallyLessonsText = Text.GetText(Text.TextId.SettingsUserControl_Highlight_Lessons_Text_1);
+            SaveText = Text.GetText(Text.TextId.SettingsUserControl_Save_Text_1);
+            SaveCompletedText = Text.GetText(Text.TextId.SettingsUserControl_Save_Completed_Text_1);
         }
 
         private void LoadSettings()

@@ -29,14 +29,14 @@ namespace ZS1Planv2.Model.Application
             TimetablePage_RefreshButton_Text_1,
             TimetablePage_Title_Text_1,
             TimetablePage_Title_Text_2,
-            TimetablePage_Grid_Text_1,
-            TimetablePage_Grid_Text_2,
-            SettingsUserControl_Text_1,
-            SettingsUserControl_Text_2,
-            SettingsUserControl_Text_3,
-            SettingsUserControl_Text_4,
-            SettingsUserControl_Text_5,
-            SettingsUserControl_Text_6
+            TimetablePage_Lesson_Number_Text_1,
+            TimetablePage_Hour_Text_1,
+            SettingsUserControl_Start_Lesson_Plan_Text_1,
+            SettingsUserControl_Highlight_Lessons_Text_1,
+            SettingsUserControl_On_Text_1,
+            SettingsUserControl_Off_Text_1,
+            SettingsUserControl_Save_Text_1,
+            SettingsUserControl_Save_Completed_Text_1
         }
 
         private static string[] _DayNames = new string[]
@@ -105,22 +105,22 @@ namespace ZS1Planv2.Model.Application
                 case TextId.TimetablePage_Title_Text_2:
                     return "Brak";
 
-                case TextId.TimetablePage_Grid_Text_1:
+                case TextId.TimetablePage_Lesson_Number_Text_1:
                     return "Nr.";
-                case TextId.TimetablePage_Grid_Text_2:
+                case TextId.TimetablePage_Hour_Text_1:
                     return "Godz.";
 
-                case TextId.SettingsUserControl_Text_1:
+                case TextId.SettingsUserControl_Start_Lesson_Plan_Text_1:
                     return "Startowy plan lekcji:";
-                case TextId.SettingsUserControl_Text_2:
+                case TextId.SettingsUserControl_Highlight_Lessons_Text_1:
                     return "Podświetl aktualne lekcje:";
-                case TextId.SettingsUserControl_Text_3:
+                case TextId.SettingsUserControl_On_Text_1:
                     return "Włączone";
-                case TextId.SettingsUserControl_Text_4:
+                case TextId.SettingsUserControl_Off_Text_1:
                     return "Wyłączone";
-                case TextId.SettingsUserControl_Text_5:
+                case TextId.SettingsUserControl_Save_Text_1:
                     return "Zapisz";
-                case TextId.SettingsUserControl_Text_6:
+                case TextId.SettingsUserControl_Save_Completed_Text_1:
                     return "Zapisano!";
 
                 default:
