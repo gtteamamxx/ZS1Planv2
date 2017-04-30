@@ -187,7 +187,7 @@ namespace ZS1Planv2.Model.Network
 
                 classLessonPlan.Days.Add(day);
 
-                OnDownloadProgressChanged?.Invoke($"{classLessonPlan.Name} [{d + 1} / 5", percent);
+                OnDownloadProgressChanged?.Invoke($"{classLessonPlan.Name} [{d + 1} / 5]", percent);
                 await Task.Delay(10);
             }
             return true;
